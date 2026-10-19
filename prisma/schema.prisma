@@ -1,0 +1,258 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------- Auth.js (panel admin) ----------
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  role          Role      @default(ADMIN)
+  accounts      Account[]
+  sessions      Session[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+}
+
+// ---------- Configuración (una sola fila, id = 1) ----------
+
+model Configuracion {
+  id                  Int      @id @default(1)
+  empresaNombre       String
+  logoUrl             String?
+  whatsapp            String
+  emailNotificaciones String
+  colorPrimario       String   @default("#F5A524")
+  colorAcento         String   @default("#A3E635")
+  performanceRatio    Float    @default(0.79)
+  degradacionAnual    Float    @default(0.005)
+  aumentoTarifaAnual  Float    @default(0.25)
+  valorUVA            Decimal  @db.Decimal(12, 2)
+  valorUVAFecha       DateTime
+  factorCO2KgKwh      Float    @default(0.4)
+  kgCO2PorArbol       Float    @default(22)
+  margenPrecio        Float    @default(0.1)
+  updatedAt           DateTime @updatedAt
+}
+
+// ---------- Ubicación y tarifas ----------
+
+model Distribuidora {
+  id              String      @id @default(cuid())
+  nombre          String      @unique
+  precioInyeccion Decimal     @db.Decimal(12, 2)
+  tarifas         Tarifa[]
+  localidades     Localidad[]
+}
+
+model Tarifa {
+  id              String        @id @default(cuid())
+  distribuidoraId String
+  distribuidora   Distribuidora @relation(fields: [distribuidoraId], references: [id], onDelete: Cascade)
+  categoria       String
+  segmento        Segmento
+  precioKwh       Decimal       @db.Decimal(12, 2)
+  cargoFijo       Decimal       @default(0) @db.Decimal(12, 2)
+  vigenteDesde    DateTime
+  activa          Boolean       @default(true)
+
+  @@index([distribuidoraId, segmento])
+}
+
+model Localidad {
+  id              String        @id @default(cuid())
+  provincia       String
+  nombre          String
+  hspMensual      Float[]
+  distribuidoraId String
+  distribuidora   Distribuidora @relation(fields: [distribuidoraId], references: [id])
+
+  @@unique([provincia, nombre])
+}
+
+// ---------- Catálogo ----------
+
+model Panel {
+  id             String  @id @default(cuid())
+  marca          String
+  modelo         String
+  wp             Int
+  m2             Float
+  precio         Decimal @db.Decimal(14, 2)
+  activo         Boolean @default(true)
+  predeterminado Boolean @default(false)
+}
+
+model Inversor {
+  id      String  @id @default(cuid())
+  marca   String
+  modelo  String
+  kw      Float
+  fases   Int
+  hibrido Boolean @default(false)
+  precio  Decimal @db.Decimal(14, 2)
+  activo  Boolean @default(true)
+}
+
+model Bateria {
+  id     String  @id @default(cuid())
+  marca  String
+  modelo String
+  kwh    Float
+  precio Decimal @db.Decimal(14, 2)
+  activo Boolean @default(true)
+}
+
+model Estructura {
+  id             String    @id @default(cuid())
+  tipoTecho      TipoTecho @unique
+  precioPorPanel Decimal   @db.Decimal(14, 2)
+  activo         Boolean   @default(true)
+}
+
+model EscalaPrecio {
+  id            String   @id @default(cuid())
+  segmento      Segmento
+  kwpDesde      Float
+  kwpHasta      Float
+  precioPorKwp  Decimal  @db.Decimal(14, 2)
+  costoFijoInst Decimal  @default(0) @db.Decimal(14, 2)
+
+  @@index([segmento])
+}
+
+// ---------- Crédito ----------
+
+model LineaCredito {
+  id                String       @id @default(cuid())
+  nombre            String
+  destinatario      Destinatario
+  tna               Float
+  tea               Float?
+  cft               Float?
+  plazos            Int[]
+  montoMaximo       Decimal      @db.Decimal(16, 2)
+  esUVA             Boolean
+  ivaSobreIntereses Boolean      @default(false)
+  vigenciaDesde     DateTime
+  vigenciaHasta     DateTime?
+  activa            Boolean      @default(true)
+  textoLegal        String
+  requisitos        String?
+  cotizaciones      Cotizacion[]
+}
+
+// ---------- Leads y cotizaciones ----------
+
+model Lead {
+  id           String       @id @default(cuid())
+  nombre       String
+  telefono     String
+  email        String
+  localidad    String
+  estado       EstadoLead   @default(NUEVO)
+  notas        String?
+  cotizaciones Cotizacion[]
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  @@index([estado, createdAt])
+}
+
+model Cotizacion {
+  id             String        @id @default(cuid())
+  leadId         String?
+  lead           Lead?         @relation(fields: [leadId], references: [id], onDelete: SetNull)
+  origen         Origen        @default(WEB)
+  tipoCliente    Segmento
+  respuestas     Json
+  resultado      Json
+  parametros     Json
+  kwp            Float
+  paneles        Int
+  precioTotal    Decimal       @db.Decimal(16, 2)
+  lineaCreditoId String?
+  lineaCredito   LineaCredito? @relation(fields: [lineaCreditoId], references: [id], onDelete: SetNull)
+  plazoMeses     Int?
+  cuotaInicial   Decimal?      @db.Decimal(16, 2)
+  createdAt      DateTime      @default(now())
+
+  @@index([createdAt])
+}
+
+enum Segmento {
+  HOGAR
+  COMERCIO
+  INDUSTRIA
+  AGRO
+}
+
+enum TipoTecho {
+  CHAPA
+  LOSA
+  TEJA
+  SUELO
+}
+
+enum Destinatario {
+  PERSONA
+  EMPRESA
+}
+
+enum EstadoLead {
+  NUEVO
+  CONTACTADO
+  VISITA
+  VENDIDO
+  PERDIDO
+}
+
+enum Origen {
+  WEB
+  EMBED
+}
+
+enum Role {
+  ADMIN
+  VENDEDOR
+}
