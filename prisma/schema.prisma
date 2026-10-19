@@ -66,7 +66,7 @@ model Configuracion {
   colorAcento         String   @default("#A3E635")
   performanceRatio    Float    @default(0.79)
   degradacionAnual    Float    @default(0.005)
-  aumentoTarifaAnual  Float    @default(0.25)
+  aumentoTarifaAnual  Float    @default(0.03) // aumento real, por encima de la inflación
   valorUVA            Decimal  @db.Decimal(12, 2)
   valorUVAFecha       DateTime
   factorCO2KgKwh      Float    @default(0.4)

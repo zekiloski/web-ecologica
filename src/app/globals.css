@@ -1,26 +1,234 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter);
+  --font-heading: var(--font-space-grotesk);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-sun-1: var(--sun-1);
+  --color-sun-2: var(--sun-2);
+  --color-ahorro: var(--ahorro);
+  --color-glass: var(--glass);
+  --color-glass-border: var(--glass-border);
+  --color-night: var(--night);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Modo claro */
+:root {
+  --radius: 0.875rem;
+  --night: #0a1024;
+  --background: #f7f6f2;
+  --foreground: #0b1222;
+  --card: #ffffff;
+  --card-foreground: #0b1222;
+  --popover: #ffffff;
+  --popover-foreground: #0b1222;
+  --primary: #f59e0b;
+  --primary-foreground: #1c1203;
+  --secondary: #eceae3;
+  --secondary-foreground: #0b1222;
+  --muted: #eceae3;
+  --muted-foreground: #4b5563;
+  --accent: #fef3c7;
+  --accent-foreground: #78350f;
+  --destructive: #dc2626;
+  --border: #e2dfd5;
+  --input: #d6d3c8;
+  --ring: #f59e0b;
+  --sun-1: #f59e0b;
+  --sun-2: #ea580c;
+  --ahorro: #3f7a0b;
+  --glass: rgb(255 255 255 / 0.75);
+  --glass-border: rgb(11 18 34 / 0.08);
+  --grid-line: rgb(11 18 34 / 0.05);
+}
+
+/* Modo oscuro (predeterminado) */
+.dark {
+  --background: #050914;
+  --foreground: #eef2fb;
+  --card: #0b1222;
+  --card-foreground: #eef2fb;
+  --popover: #0d1528;
+  --popover-foreground: #eef2fb;
+  --primary: #fbbf24;
+  --primary-foreground: #1c1203;
+  --secondary: #131c33;
+  --secondary-foreground: #eef2fb;
+  --muted: #131c33;
+  --muted-foreground: #9aa6c0;
+  --accent: #1d2440;
+  --accent-foreground: #fde68a;
+  --destructive: #f87171;
+  --border: rgb(255 255 255 / 0.09);
+  --input: rgb(255 255 255 / 0.14);
+  --ring: #fbbf24;
+  --sun-1: #fbbf24;
+  --sun-2: #f97316;
+  --ahorro: #a3e635;
+  --glass: rgb(255 255 255 / 0.04);
+  --glass-border: rgb(255 255 255 / 0.09);
+  --grid-line: rgb(255 255 255 / 0.04);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans;
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-heading);
+    letter-spacing: -0.02em;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@utility text-sun {
+  background-image: linear-gradient(100deg, var(--sun-1), var(--sun-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility bg-sun {
+  background-image: linear-gradient(110deg, var(--sun-1), var(--sun-2));
+}
+
+@utility glass {
+  background-color: var(--glass);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+@utility bg-grid {
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+/* Botón principal con brillo al pasar */
+@utility btn-sun {
+  position: relative;
+  overflow: hidden;
+  background-image: linear-gradient(110deg, var(--sun-1), var(--sun-2));
+  color: #1c1203;
+  font-weight: 600;
+  box-shadow: 0 8px 30px -10px color-mix(in oklab, var(--sun-2) 70%, transparent);
+  transition: transform 0.2s, box-shadow 0.2s;
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(110deg, transparent 30%, rgb(255 255 255 / 0.45) 50%, transparent 70%);
+    transform: translateX(-120%);
+    transition: transform 0.7s;
+  }
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 36px -10px color-mix(in oklab, var(--sun-2) 85%, transparent);
+  }
+  &:hover::after {
+    transform: translateX(120%);
+  }
+}
+
+@keyframes sun-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.06);
+  }
+}
+
+@keyframes rays-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes shine-sweep {
+  0% {
+    transform: translateX(-140%) skewX(-20deg);
+  }
+  60%,
+  100% {
+    transform: translateX(240%) skewX(-20deg);
+  }
+}
+
+.anim-sun-pulse {
+  animation: sun-pulse 6s ease-in-out infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+.anim-rays {
+  animation: rays-spin 60s linear infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+.anim-shine {
+  animation: shine-sweep 5s ease-in-out infinite;
+  transform-box: fill-box;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .anim-sun-pulse,
+  .anim-rays,
+  .anim-shine {
+    animation: none;
+  }
+}
+
+/* Inputs numéricos sin flechas */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
 }
