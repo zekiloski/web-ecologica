@@ -20,12 +20,20 @@ export default async function PublicLayout({ children }: { children: React.React
     knowsAbout: ["paneles solares", "energía solar fotovoltaica", "generación distribuida"],
   };
 
+  // Colores cargados desde el admin (validados como #rrggbb). Si siguen en el valor por defecto, se usa la paleta del CSS.
+  const esColor = (c: string) => /^#[0-9a-fA-F]{6}$/.test(c);
+  const css = [
+    esColor(config.colorPrimario) && config.colorPrimario.toUpperCase() !== "#F5A524" && `:root,.dark{--sun-1:${config.colorPrimario};--primary:${config.colorPrimario};--ring:${config.colorPrimario}}`,
+    esColor(config.colorAcento) && config.colorAcento.toUpperCase() !== "#A3E635" && `.dark{--ahorro:${config.colorAcento}}`,
+  ].filter(Boolean);
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <Header />
+      {css.length > 0 && <style dangerouslySetInnerHTML={{ __html: css.join("") }} />}
+      <Header logoUrl={config.logoUrl} />
       <main>{children}</main>
-      <Footer nombre={config.empresaNombre} />
+      <Footer nombre={config.empresaNombre} logoUrl={config.logoUrl} />
       <WhatsAppFloat numero={config.whatsapp} />
     </>
   );

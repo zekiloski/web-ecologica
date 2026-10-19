@@ -1,6 +1,14 @@
 import Link from "next/link";
 
-export function Logo({ nombre = "Eco Lógica" }: { nombre?: string }) {
+export function Logo({ nombre = "Eco Lógica", logoUrl }: { nombre?: string; logoUrl?: string | null }) {
+  if (logoUrl) {
+    return (
+      <Link href="/" className="flex items-center">
+        {/* eslint-disable-next-line @next/next/no-img-element -- URL externa cargada desde el admin */}
+        <img src={logoUrl} alt={nombre} className="h-9 w-auto max-w-44 object-contain" />
+      </Link>
+    );
+  }
   return (
     <Link href="/" className="flex items-center gap-2.5 font-heading text-lg font-semibold tracking-tight">
       <svg viewBox="0 0 32 32" className="size-8" aria-hidden>

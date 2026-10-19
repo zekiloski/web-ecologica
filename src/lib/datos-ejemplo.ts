@@ -44,6 +44,9 @@ const LEGAL =
 export const DATOS_EJEMPLO: DatosCotizador = {
   config: {
     empresaNombre: "Eco Lógica S.A.S",
+    logoUrl: null,
+    colorPrimario: "#F5A524",
+    colorAcento: "#A3E635",
     whatsapp: "5493572000000",
     performanceRatio: 0.79,
     degradacionAnual: 0.005,

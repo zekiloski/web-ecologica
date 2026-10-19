@@ -13,6 +13,9 @@ export type TipoTecho = (typeof TIPOS_TECHO)[number];
 export interface DatosCotizador {
   config: {
     empresaNombre: string;
+    logoUrl: string | null;
+    colorPrimario: string;
+    colorAcento: string;
     whatsapp: string;
     performanceRatio: number;
     degradacionAnual: number;

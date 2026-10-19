@@ -10,11 +10,11 @@ const NAV = [
   { href: "/#contacto", label: "Contacto" },
 ];
 
-export function Header() {
+export function Header({ logoUrl }: { logoUrl?: string | null }) {
   return (
     <header className="sticky top-0 z-40 border-b border-glass-border bg-background/70 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
-        <Logo />
+        <Logo logoUrl={logoUrl} />
         <nav className="hidden items-center gap-7 text-sm text-muted-foreground lg:flex" aria-label="Principal">
           {NAV.map((n) => (
             <Link key={n.href} href={n.href} className="transition hover:text-foreground">

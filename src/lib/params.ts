@@ -40,6 +40,9 @@ async function cargarDatos(): Promise<DatosCotizador> {
   return {
     config: {
       empresaNombre: config.empresaNombre,
+      logoUrl: config.logoUrl,
+      colorPrimario: config.colorPrimario,
+      colorAcento: config.colorAcento,
       whatsapp: config.whatsapp,
       performanceRatio: config.performanceRatio,
       degradacionAnual: config.degradacionAnual,
