@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Eco Lógica: cotizador solar con simulador de crédito Bancor
 
-## Getting Started
+Web de Eco Lógica S.A.S (Oncativo, Córdoba): home, cotizador de 8 pasos, proyectos realizados y panel de administración.
 
-First, run the development server:
+Stack: Next.js 15 (App Router) + TypeScript + Tailwind 4, Prisma con MySQL, Auth.js (link por email vía Resend).
+
+## Desarrollo local
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev        # http://localhost:3000
+npm test           # tests de cálculo (Vitest)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Sin `DATABASE_URL`, `npm run dev` usa los datos de ejemplo de `src/lib/datos-ejemplo.ts`, así que el home y el cotizador funcionan sin base. El panel `/admin` y el guardado de leads necesitan una base MySQL; las variables están en `.env.example`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Publicar en Hostinger (plan Business o Cloud)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Hostinger compila la app en su servidor y la arranca en modo `standalone`. El script `build` aplica las migraciones y carga los datos iniciales antes de compilar (`scripts/preparar-db.mjs`). Si no hay `DATABASE_URL`, ese paso se saltea.
 
-## Learn More
+### 1. Crear la app
 
-To learn more about Next.js, take a look at the following resources:
+1. En hPanel: **Websites → Add website → Node.js Apps → Import Git repository**.
+2. Conectá GitHub y elegí el repositorio `zekiloski/web-ecologica`, rama `main`.
+3. Dominio: elegí el **dominio temporal** para probar (después se conecta el definitivo).
+4. Revisá la configuración que Hostinger completa sola:
+   - Framework: **Next.js**
+   - Node.js: **22**
+   - Build command: **build**
+   - Output directory: **.next**
+5. Desplegá. Este primer build no tiene base todavía: la web compila, pero va a dar error hasta completar el paso 3.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 2. Crear la base MySQL
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+En el panel del sitio: **Databases → Management**. Creá una base con su usuario y contraseña y anotá los tres datos. El host es `localhost`.
 
-## Deploy on Vercel
+### 3. Variables de entorno
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+En el panel del sitio: **Deployments → Settings and redeploy → Environment variables**.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Variable | Valor |
+|---|---|
+| `DATABASE_URL` | `mysql://USUARIO:CONTRASEÑA@localhost:3306/BASE` |
+| `AUTH_SECRET` | Texto aleatorio. Generalo con `node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"` |
+| `AUTH_URL` | La dirección del sitio, ej. `https://xxxx.hostingersite.com` |
+| `NEXT_PUBLIC_SITE_URL` | La misma dirección |
+| `AUTH_RESEND_KEY` | Clave de Resend (`re_...`) |
+| `EMAIL_FROM` | `Eco Lógica <onboarding@resend.dev>` (hasta verificar un dominio en Resend) |
+| `ADMIN_EMAILS` | Email(s) con acceso al panel, separados por coma |
+
+Si la contraseña tiene caracteres especiales (`@ : / # ? &`), hay que codificarlos en la URL: por ejemplo `@` se escribe `%40`.
+
+Guardá y **redesplegá**. En el log del build tienen que aparecer `All migrations have been successfully applied` y `Seed completo.`
+
+### 4. Cuando conectes el dominio definitivo
+
+Actualizá `AUTH_URL` y `NEXT_PUBLIC_SITE_URL` con el dominio nuevo y redesplegá.
+
+## Dónde se edita cada cosa
+
+- **Tarifas, tasas, valor UVA, catálogo, precios, datos de la empresa:** panel `/admin`.
+- **Proyectos y fotos:** `src/content/proyectos.ts` y `public/proyectos/<proyecto>/`.
+- **Textos del home, Nosotros, preguntas frecuentes y contacto:** `src/content/sitio.ts`.
+- **Fórmulas:** `src/lib/solar.ts` y `src/lib/credito.ts` (con tests en `tests/`).

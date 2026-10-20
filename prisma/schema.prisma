@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
@@ -27,12 +27,12 @@ model Account {
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String?
-  access_token      String?
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String?
+  id_token          String? @db.Text
   session_state     String?
   user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -59,7 +59,7 @@ model VerificationToken {
 model Configuracion {
   id                  Int      @id @default(1)
   empresaNombre       String
-  logoUrl             String?
+  logoUrl             String?  @db.Text
   whatsapp            String
   emailNotificaciones String
   colorPrimario       String   @default("#F5A524")
@@ -103,7 +103,7 @@ model Localidad {
   id              String        @id @default(cuid())
   provincia       String
   nombre          String
-  hspMensual      Float[]
+  hspMensual      Json // 12 números, enero a diciembre
   distribuidoraId String
   distribuidora   Distribuidora @relation(fields: [distribuidoraId], references: [id])
 
@@ -170,15 +170,15 @@ model LineaCredito {
   tna               Float
   tea               Float?
   cft               Float?
-  plazos            Int[]
+  plazos            Json // meses habilitados, ej. [12, 24, 36]
   montoMaximo       Decimal      @db.Decimal(16, 2)
   esUVA             Boolean
   ivaSobreIntereses Boolean      @default(false)
   vigenciaDesde     DateTime
   vigenciaHasta     DateTime?
   activa            Boolean      @default(true)
-  textoLegal        String
-  requisitos        String?
+  textoLegal        String       @db.Text
+  requisitos        String?      @db.Text
   cotizaciones      Cotizacion[]
 }
 
@@ -191,7 +191,7 @@ model Lead {
   email        String
   localidad    String
   estado       EstadoLead   @default(NUEVO)
-  notas        String?
+  notas        String?      @db.Text
   cotizaciones Cotizacion[]
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt

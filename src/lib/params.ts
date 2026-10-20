@@ -4,6 +4,11 @@ import { prisma } from "@/lib/db";
 import { DATOS_EJEMPLO } from "@/lib/datos-ejemplo";
 import { SEGMENTOS, type DatosCotizador, type Segmento } from "@/lib/schemas";
 
+/** Los arrays se guardan como JSON en MySQL; se validan al leer. */
+function numeros(valor: unknown): number[] {
+  return Array.isArray(valor) ? valor.map(Number).filter(Number.isFinite) : [];
+}
+
 async function cargarDatos(): Promise<DatosCotizador> {
   const [config, localidades, panel, inversores, baterias, estructuras, escalas, lineas] = await Promise.all([
     prisma.configuracion.findUniqueOrThrow({ where: { id: 1 } }),
@@ -61,7 +66,7 @@ async function cargarDatos(): Promise<DatosCotizador> {
         id: l.id,
         provincia: l.provincia,
         nombre: l.nombre,
-        hspMensual: l.hspMensual,
+        hspMensual: numeros(l.hspMensual),
         distribuidora: l.distribuidora.nombre,
         precioInyeccion: Number(l.distribuidora.precioInyeccion),
         tarifas: tarifas.map((t) => ({ segmento: t.segmento, categoria: t.categoria, precioKwh: Number(t.precioKwh), cargoFijo: Number(t.cargoFijo) })),
@@ -79,7 +84,7 @@ async function cargarDatos(): Promise<DatosCotizador> {
       tna: l.tna,
       tea: l.tea,
       cft: l.cft,
-      plazos: [...l.plazos].sort((a, b) => a - b),
+      plazos: numeros(l.plazos).sort((a, b) => a - b),
       montoMaximo: Number(l.montoMaximo),
       esUVA: l.esUVA,
       ivaSobreIntereses: l.ivaSobreIntereses,

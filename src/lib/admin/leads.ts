@@ -14,9 +14,10 @@ export const SEGMENTO_LABEL = { HOGAR: "Hogar", COMERCIO: "Comercio", INDUSTRIA:
 export function filtroLeads(estado?: string, q?: string): Prisma.LeadWhereInput {
   const where: Prisma.LeadWhereInput = {};
   if (estado && ESTADOS.some((e) => e.id === estado)) where.estado = estado as EstadoLead;
+  // En MySQL la búsqueda ya ignora mayúsculas y acentos (collation por defecto).
   const texto = q?.trim();
   if (texto) {
-    where.OR = ["nombre", "email", "telefono", "localidad"].map((campo) => ({ [campo]: { contains: texto, mode: "insensitive" } }));
+    where.OR = ["nombre", "email", "telefono", "localidad"].map((campo) => ({ [campo]: { contains: texto } }));
   }
   return where;
 }
