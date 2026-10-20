@@ -15,7 +15,10 @@ export default async function PublicLayout({ children }: { children: React.React
     name: config.empresaNombre,
     description: "Venta e instalación de paneles solares on-grid para hogares, comercios, industrias y campo. Financiación con crédito Bancor.",
     telephone: `+${config.whatsapp}`,
-    address: { "@type": "PostalAddress", addressLocality: EMPRESA.localidad, addressRegion: EMPRESA.provincia, addressCountry: "AR" },
+    address: { "@type": "PostalAddress", streetAddress: EMPRESA.calle, addressLocality: EMPRESA.localidad, addressRegion: EMPRESA.provincia, addressCountry: "AR" },
+    email: EMPRESA.email,
+    sameAs: [EMPRESA.redes.facebook, EMPRESA.redes.instagram],
+    url: "https://www.ecologica.com.ar",
     areaServed: { "@type": "State", name: "Córdoba" },
     knowsAbout: ["paneles solares", "energía solar fotovoltaica", "generación distribuida"],
   };

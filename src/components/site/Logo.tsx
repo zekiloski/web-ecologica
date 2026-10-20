@@ -1,5 +1,10 @@
+import Image from "next/image";
 import Link from "next/link";
 
+/**
+ * Logo de Eco Lógica: el globo de la marca + "ECO" en verde y "Lógica" en el color del texto,
+ * para que se lea en modo claro y oscuro. Si el admin carga un logo propio, se usa ese.
+ */
 export function Logo({ nombre = "Eco Lógica", logoUrl }: { nombre?: string; logoUrl?: string | null }) {
   if (logoUrl) {
     return (
@@ -10,19 +15,10 @@ export function Logo({ nombre = "Eco Lógica", logoUrl }: { nombre?: string; log
     );
   }
   return (
-    <Link href="/" className="flex items-center gap-2.5 font-heading text-lg font-semibold tracking-tight">
-      <svg viewBox="0 0 32 32" className="size-8" aria-hidden>
-        <defs>
-          <linearGradient id="logo-sun" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stopColor="var(--sun-1)" />
-            <stop offset="1" stopColor="var(--sun-2)" />
-          </linearGradient>
-        </defs>
-        <circle cx="16" cy="13" r="6.5" fill="url(#logo-sun)" />
-        <path d="M4 26 L10 18 H22 L28 26 Z" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
-        <path d="M13 18 L11.5 26 M19 18 L20.5 26 M7 22 H25" stroke="currentColor" strokeWidth="1.2" opacity="0.7" />
-      </svg>
-      <span>{nombre}</span>
+    <Link href="/" aria-label={nombre} className="flex items-center font-heading text-xl leading-none font-bold tracking-tight">
+      <span className="text-eco">ECO</span>
+      <Image src="/marca/globo.png" alt="" width={137} height={160} className="mx-0.5 h-9 w-auto" priority />
+      <span className="text-marino dark:text-foreground">Lógica</span>
     </Link>
   );
 }

@@ -22,8 +22,8 @@ async function main() {
     data: {
       id: 1,
       empresaNombre: "Eco Lógica S.A.S",
-      whatsapp: "5493572000000",
-      emailNotificaciones: "ventas@ejemplo.com",
+      whatsapp: "5493572445884",
+      emailNotificaciones: "info@ecologica.com.ar",
       valorUVA: 1650,
       valorUVAFecha: new Date(),
     },

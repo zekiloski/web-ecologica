@@ -5,7 +5,8 @@ import { ThemeToggle } from "@/components/site/ThemeToggle";
 const NAV = [
   { href: "/#como-funciona", label: "Cómo funciona" },
   { href: "/#financiacion", label: "Financiación" },
-  { href: "/#casos", label: "Proyectos" },
+  { href: "/proyectos", label: "Proyectos" },
+  { href: "/#nosotros", label: "Nosotros" },
   { href: "/#preguntas", label: "Preguntas" },
   { href: "/#contacto", label: "Contacto" },
 ];

@@ -1,32 +1,36 @@
 /**
- * Textos y casos del home. Editá acá para cambiar contenido sin tocar componentes.
- * Los casos son los dos proyectos públicos de Eco Lógica; sumá los que quieras mostrar.
+ * Textos del sitio. Editá acá para cambiar contenido sin tocar componentes.
+ * Datos de contacto y "Nosotros" tomados de www.ecologica.com.ar. Los proyectos están en content/proyectos.ts.
  */
 
 export const EMPRESA = {
   nombreCorto: "Eco Lógica",
+  calle: "Tomás Garzón 1065",
   localidad: "Oncativo",
   provincia: "Córdoba",
-  direccion: "Oncativo, Córdoba, Argentina",
-  mapaQuery: "Oncativo, Córdoba, Argentina",
+  direccion: "Tomás Garzón 1065, Oncativo, Córdoba",
+  mapaQuery: "Tomás Garzón 1065, Oncativo, Córdoba, Argentina",
+  telefono: "(03572) 15 445884",
+  email: "info@ecologica.com.ar",
+  horarios: ["Lunes a viernes: 9 a 13 h y 16:30 a 19:30 h", "Sábados: 10 a 12 h"],
+  redes: {
+    facebook: "https://www.facebook.com/ecologicaOK/",
+    instagram: "https://www.instagram.com/ecologicasas",
+  },
 };
 
-export const CASOS = [
-  {
-    titulo: "Planta fabril",
-    segmento: "Industria",
-    kw: 300,
-    descripcion: "Sistema on-grid sobre la cubierta de una planta industrial. Reduce el costo energético de la producción diurna.",
-    tono: "from-amber-400/30 to-orange-600/10",
-  },
-  {
-    titulo: "Sistema sobre piso",
-    segmento: "Comercio / Agro",
-    kw: 30,
-    descripcion: "Estructura sobre suelo para aprovechar terreno libre sin intervenir techos existentes.",
-    tono: "from-lime-400/25 to-emerald-600/10",
-  },
-];
+export const NOSOTROS = {
+  titulo: "Más de una década en Oncativo",
+  texto:
+    "Empezamos brindando servicios de telecomunicaciones en Oncativo y la zona. Con el tiempo incorporamos las energías renovables y hoy son nuestro centro: hacemos asesoramiento y diagnóstico energético para encontrar la mejor solución para cada hogar, comercio e industria.",
+  mision: "Crear conciencia en el uso de energías alternativas para mejorar el medio ambiente y construir un futuro sustentable desde hoy.",
+  vision: "Ser una empresa líder de Argentina en la instalación de equipos de energía solar.",
+  servicios: [
+    { titulo: "Solar eléctrica", texto: "Sistemas on-grid, off-grid e híbridos para hogares, comercios, industrias y campo." },
+    { titulo: "Solar térmica", texto: "Termotanques solares: hasta un 80 % menos de gas para el agua caliente." },
+    { titulo: "Climatización de piscinas", texto: "Climatización solar y bombas de calor de bajo consumo." },
+  ],
+};
 
 /** Generación específica estimada para Córdoba (kWh por kWp por año) para el contador de impacto. */
 export const KWH_POR_KWP_ANIO = 1450;

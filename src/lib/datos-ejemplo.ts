@@ -47,7 +47,7 @@ export const DATOS_EJEMPLO: DatosCotizador = {
     logoUrl: null,
     colorPrimario: "#F5A524",
     colorAcento: "#A3E635",
-    whatsapp: "5493572000000",
+    whatsapp: "5493572445884",
     performanceRatio: 0.79,
     degradacionAnual: 0.005,
     aumentoTarifaAnual: 0.03,

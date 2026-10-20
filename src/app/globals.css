@@ -28,6 +28,9 @@
   --color-sun-1: var(--sun-1);
   --color-sun-2: var(--sun-2);
   --color-ahorro: var(--ahorro);
+  --color-eco: var(--eco);
+  --color-eco-2: var(--eco-2);
+  --color-marino: var(--marino);
   --color-glass: var(--glass);
   --color-glass-border: var(--glass-border);
   --color-night: var(--night);
@@ -64,7 +67,10 @@
   --ring: #f59e0b;
   --sun-1: #f59e0b;
   --sun-2: #ea580c;
-  --ahorro: #3f7a0b;
+  --ahorro: #2f7a12;
+  --eco: #3b8a1c;
+  --eco-2: #0f8a5f;
+  --marino: #1a2a7b;
   --glass: rgb(255 255 255 / 0.75);
   --glass-border: rgb(11 18 34 / 0.08);
   --grid-line: rgb(11 18 34 / 0.05);
@@ -92,7 +98,10 @@
   --ring: #fbbf24;
   --sun-1: #fbbf24;
   --sun-2: #f97316;
-  --ahorro: #a3e635;
+  --ahorro: #8fd75a;
+  --eco: #7cc84a;
+  --eco-2: #34d399;
+  --marino: #8fa2ff;
   --glass: rgb(255 255 255 / 0.04);
   --glass-border: rgb(255 255 255 / 0.09);
   --grid-line: rgb(255 255 255 / 0.04);
@@ -123,6 +132,17 @@
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+}
+
+@utility text-eco-grad {
+  background-image: linear-gradient(100deg, var(--eco), var(--eco-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility bg-eco {
+  background-image: linear-gradient(110deg, var(--eco), var(--eco-2));
 }
 
 @utility bg-sun {
