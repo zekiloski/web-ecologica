@@ -2,6 +2,7 @@ import "server-only";
 import { unstable_cache } from "next/cache";
 import { prisma } from "@/lib/db";
 import { DATOS_EJEMPLO } from "@/lib/datos-ejemplo";
+import { asegurarBase } from "@/lib/migraciones";
 import { SEGMENTOS, type DatosCotizador, type Segmento } from "@/lib/schemas";
 
 /** Los arrays se guardan como JSON en MySQL; se validan al leer. */
@@ -10,6 +11,7 @@ function numeros(valor: unknown): number[] {
 }
 
 async function cargarDatos(): Promise<DatosCotizador> {
+  await asegurarBase();
   const [config, localidades, panel, inversores, baterias, estructuras, escalas, lineas] = await Promise.all([
     prisma.configuracion.findUniqueOrThrow({ where: { id: 1 } }),
     prisma.localidad.findMany({

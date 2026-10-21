@@ -1,6 +1,6 @@
-// Corre durante el build (Hostinger no tiene un paso previo al arranque):
-// aplica las migraciones pendientes y carga los datos iniciales si la base está vacía.
-// Sin DATABASE_URL (build local de prueba) no hace nada.
+// Corre durante el build: intenta aplicar las migraciones y cargar los datos iniciales.
+// Si la base no está disponible en el build (o todavía no existe), no corta la publicación:
+// la web hace lo mismo al arrancar (src/lib/migraciones.ts).
 import { execSync } from "node:child_process";
 
 if (!process.env.DATABASE_URL) {
@@ -8,15 +8,13 @@ if (!process.env.DATABASE_URL) {
   process.exit(0);
 }
 
-const correr = (cmd) => execSync(cmd, { stdio: "inherit", env: process.env });
-
 try {
-  correr("npx prisma migrate deploy");
-  correr("npx prisma db seed");
+  execSync("npx prisma migrate deploy", { stdio: "inherit", env: process.env });
+  execSync("npx prisma db seed", { stdio: "inherit", env: process.env });
 } catch {
-  console.error(
-    "\n[preparar-db] No se pudo preparar la base de datos. Revisá DATABASE_URL " +
-      "(formato mysql://USUARIO:CLAVE@localhost:3306/BASE) y que el usuario tenga permisos sobre la base.\n",
+  console.warn(
+    "\n[preparar-db] AVISO: no se pudo conectar a la base durante el build. Se continúa igual:\n" +
+      "la web aplica las migraciones al arrancar. Si después la web muestra error, revisá DATABASE_URL\n" +
+      "(formato mysql://USUARIO:CLAVE@localhost:3306/BASE) y que la base y el usuario existan.\n",
   );
-  process.exit(1);
 }

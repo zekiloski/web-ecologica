@@ -16,7 +16,7 @@ Sin `DATABASE_URL`, `npm run dev` usa los datos de ejemplo de `src/lib/datos-eje
 
 ## Publicar en Hostinger (plan Business o Cloud)
 
-Hostinger compila la app en su servidor y la arranca en modo `standalone`. El script `build` aplica las migraciones y carga los datos iniciales antes de compilar (`scripts/preparar-db.mjs`). Si no hay `DATABASE_URL`, ese paso se saltea.
+Hostinger compila la app en su servidor y la arranca en modo `standalone`. La base se prepara sola: el build intenta aplicar las migraciones y cargar los datos iniciales (`scripts/preparar-db.mjs`) y, si no llega a la base, no se corta. Al arrancar, la web hace lo mismo (`src/lib/migraciones.ts`) y, si la base todavía no existe, reintenta en la próxima visita.
 
 ### 1. Crear la app
 
@@ -28,7 +28,7 @@ Hostinger compila la app en su servidor y la arranca en modo `standalone`. El sc
    - Node.js: **22**
    - Build command: **build**
    - Output directory: **.next**
-5. Desplegá. Este primer build no tiene base todavía: la web compila, pero va a dar error hasta completar el paso 3.
+5. Desplegá. Sin base todavía, la web compila pero muestra «No pudimos cargar la página» hasta completar el paso 3.
 
 ### 2. Crear la base MySQL
 
@@ -50,7 +50,7 @@ En el panel del sitio: **Deployments → Settings and redeploy → Environment v
 
 Si la contraseña tiene caracteres especiales (`@ : / # ? &`), hay que codificarlos en la URL: por ejemplo `@` se escribe `%40`.
 
-Guardá y **redesplegá**. En el log del build tienen que aparecer `All migrations have been successfully applied` y `Seed completo.`
+Guardá y **redesplegá**. Las tablas se crean en el build (log: `All migrations have been successfully applied` y `Seed completo.`) o, si el build no llega a la base, al arrancar (Runtime Logs: `[db] Migración aplicada` y `[db] Datos iniciales cargados.`). Un aviso `[preparar-db] AVISO` en el build no es un error.
 
 ### 4. Cuando conectes el dominio definitivo
 
