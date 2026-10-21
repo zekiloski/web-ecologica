@@ -5,10 +5,19 @@ import "./globals.css";
 const inter = Inter({ variable: "--font-inter", subsets: ["latin"], display: "swap" });
 const spaceGrotesk = Space_Grotesk({ variable: "--font-space-grotesk", subsets: ["latin"], display: "swap" });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://web-production-65388.up.railway.app";
+/** URL pública para metadatos. Tolera comillas pegadas o un valor inválido (no debe romper el build). */
+function urlDelSitio(): URL {
+  const crudo = (process.env.NEXT_PUBLIC_SITE_URL ?? "").trim().replace(/^["']|["']$/g, "");
+  try {
+    return new URL(crudo);
+  } catch {
+    if (crudo) console.warn(`[config] NEXT_PUBLIC_SITE_URL no es una URL válida ("${crudo}"). Se usa http://localhost:3000.`);
+    return new URL("http://localhost:3000");
+  }
+}
 
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
+  metadataBase: urlDelSitio(),
   title: {
     default: "Paneles solares en Córdoba con financiación Bancor | Eco Lógica",
     template: "%s | Eco Lógica",
