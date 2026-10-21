@@ -20,6 +20,10 @@ const tick = { fill: "var(--muted-foreground)", fontSize: 12 };
 export function CuotaVsAhorroChart({ datos, anticipo, repago }: { datos: Punto[]; anticipo: number; repago: number | null }) {
   const [vista, setVista] = useState<"mensual" | "acumulado">("mensual");
   const serie = datos.map((d) => ({ ...d, pagadoAcumulado: d.pagadoAcumulado + anticipo }));
+  // Marcas por año, como máximo 6 para que no se pisen en pantallas chicas.
+  const anios = Math.floor(serie.length / 12);
+  const paso = Math.max(1, Math.ceil(anios / 6)) * 12;
+  const marcas = Array.from({ length: Math.floor(serie.length / paso) }, (_, k) => (k + 1) * paso);
 
   return (
     <div>
@@ -37,7 +41,7 @@ export function CuotaVsAhorroChart({ datos, anticipo, repago }: { datos: Punto[]
           </button>
         ))}
       </div>
-      <div className="h-72 w-full" role="img" aria-label={vista === "mensual" ? "Cuota mensual comparada con el ahorro mensual" : "Total pagado comparado con el ahorro acumulado"}>
+      <div className="h-64 w-full sm:h-72" role="img" aria-label={vista === "mensual" ? "Cuota mensual comparada con el ahorro mensual" : "Total pagado comparado con el ahorro acumulado"}>
         <ResponsiveContainer>
           <ComposedChart data={serie} margin={{ top: 16, right: 8, left: -4, bottom: 0 }}>
             <defs>
@@ -47,8 +51,8 @@ export function CuotaVsAhorroChart({ datos, anticipo, repago }: { datos: Punto[]
               </linearGradient>
             </defs>
             <CartesianGrid vertical={false} stroke="var(--glass-border)" />
-            <XAxis dataKey="mes" tickLine={false} axisLine={false} tick={tick} tickFormatter={(m) => (m % 12 === 0 ? `Año ${m / 12}` : "")} interval={0} minTickGap={0} />
-            <YAxis tickLine={false} axisLine={false} tick={tick} tickFormatter={pesosCorto} width={64} />
+            <XAxis dataKey="mes" tickLine={false} axisLine={false} tick={tick} ticks={marcas} tickFormatter={(m) => `Año ${m / 12}`} interval="preserveStartEnd" minTickGap={8} />
+            <YAxis tickLine={false} axisLine={false} tick={tick} tickFormatter={pesosCorto} width={56} />
             <Tooltip
               contentStyle={tooltipStyle}
               labelFormatter={(m) => `Mes ${m}`}

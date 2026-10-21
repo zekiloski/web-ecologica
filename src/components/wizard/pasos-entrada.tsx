@@ -333,7 +333,7 @@ function Maquinaria({ r, actualizar }: Pick<PropsPaso, "r" | "actualizar">) {
       <button
         type="button"
         onClick={() => actualizar((x) => void x.consumo.estimacion.maquinas.push({ nombre: "", kw: 0, horasDia: 0 }))}
-        className="mt-2 inline-flex items-center gap-1.5 text-sm font-medium text-primary"
+        className="mt-2 inline-flex min-h-11 items-center gap-1.5 text-sm font-medium text-primary"
       >
         <Plus className="size-4" /> Agregar equipo
       </button>

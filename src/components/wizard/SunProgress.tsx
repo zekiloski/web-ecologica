@@ -31,7 +31,7 @@ export function SunProgress({ paso, pasos, onIr, maxAlcanzado }: { paso: number;
 
   return (
     <div>
-      <svg viewBox={`0 0 ${W} ${H}`} className="w-full" aria-hidden>
+      <svg viewBox={`0 0 ${W} ${H}`} className="mx-auto block max-h-[min(8rem,20dvh)] w-full" aria-hidden>
         <defs>
           <linearGradient id="arco-sol" x1="0" x2="1">
             <stop offset="0" stopColor="var(--sun-1)" />
@@ -65,7 +65,7 @@ export function SunProgress({ paso, pasos, onIr, maxAlcanzado }: { paso: number;
           <circle r="11" fill="url(#arco-sol)" />
         </motion.g>
       </svg>
-      <ol className="mt-1 hidden grid-cols-8 gap-1 text-center text-[11px] sm:grid">
+      <ol className="mt-1 hidden grid-cols-8 gap-1 text-center text-xs sm:grid">
         {pasos.map((nombre, i) => (
           <li key={nombre}>
             <button

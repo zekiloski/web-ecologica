@@ -23,10 +23,10 @@ export function Impacto({ factorCO2, kgPorArbol }: { factorCO2: number; kgPorArb
       <div className="pointer-events-none absolute -top-24 -left-24 size-72 rounded-full bg-eco opacity-15 blur-3xl" />
       <div className="relative grid grid-cols-2 lg:grid-cols-4">
         {items.map((i, k) => (
-          <div key={i.unidad} className={k > 0 ? "border-eco/20 p-6 sm:p-8 lg:border-l" : "p-6 sm:p-8"}>
-            <p className="font-heading text-4xl font-semibold sm:text-5xl">
+          <div key={i.unidad} className={k > 0 ? "border-eco/20 p-5 sm:p-8 lg:border-l" : "p-5 sm:p-8"}>
+            <p className="font-heading text-3xl leading-tight font-semibold sm:text-5xl">
               <AnimatedNumber value={i.valor} className="text-eco-grad" />
-              <span className="ml-2 text-lg text-muted-foreground">{i.unidad}</span>
+              <span className="block text-base text-muted-foreground sm:ml-2 sm:inline sm:text-lg">{i.unidad}</span>
             </p>
             <p className="mt-2 text-sm text-muted-foreground">{i.texto}</p>
           </div>

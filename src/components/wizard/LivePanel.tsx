@@ -67,8 +67,8 @@ export function LivePanel({ res, paso }: { res: ResultadoCotizacion | null; paso
 
       {/* Celular: barra fija abajo */}
       {res && paso >= 2 && (
-        <div className="fixed inset-x-0 bottom-0 z-30 border-t border-glass-border bg-background/90 backdrop-blur-xl lg:hidden">
-          <button type="button" onClick={() => setAbierto((a) => !a)} aria-expanded={abierto} className="flex w-full items-center gap-3 px-4 py-3 pr-20 text-left">
+        <div data-barra-movil className="fixed inset-x-0 bottom-0 z-30 border-t border-glass-border bg-background/90 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl lg:hidden">
+          <button type="button" onClick={() => setAbierto((a) => !a)} aria-expanded={abierto} className="flex min-h-14 w-full items-center gap-3 px-4 py-3 text-left">
             <span className="flex-1 text-sm">
               <span className="font-semibold">{numero(res.sistema.kwpReal, 2)} kWp</span>
               <span className="text-muted-foreground"> · {res.sistema.paneles} paneles · </span>

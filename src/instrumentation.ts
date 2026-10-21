@@ -1,10 +1,8 @@
 // Next ejecuta register() una vez al arrancar el servidor: prepara la base (migraciones + datos iniciales).
+// El import queda dentro del if con NEXT_RUNTIME para que no se compile para el runtime edge.
 export async function register() {
-  if (process.env.NEXT_RUNTIME !== "nodejs" || !process.env.DATABASE_URL) return;
-  const { asegurarBase } = await import("@/lib/migraciones");
-  try {
-    await asegurarBase();
-  } catch (e) {
-    console.error("[db] No se pudo preparar la base al arrancar. Se reintenta en la próxima visita.", e);
+  if (process.env.NEXT_RUNTIME === "nodejs") {
+    const { prepararBaseAlArrancar } = await import("./lib/arranque");
+    await prepararBaseAlArrancar();
   }
 }

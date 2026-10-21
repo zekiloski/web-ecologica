@@ -60,14 +60,14 @@ export function Wizard({ datos, importeInicial, origen = "WEB" }: { datos: Datos
   ][paso];
 
   return (
-    <div className="mx-auto max-w-7xl px-4 pt-6 pb-32 sm:px-6 lg:pb-16">
+    <div className="mx-auto max-w-7xl px-4 pt-4 pb-32 sm:px-6 sm:pt-6 lg:pb-16">
       <div className="mx-auto max-w-3xl">
         <SunProgress paso={paso} pasos={PASOS} onIr={(p) => p <= maxAlcanzado && mover(p)} maxAlcanzado={maxAlcanzado} />
       </div>
 
       <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_340px] lg:items-start">
         <div ref={tarjeta} className="glass scroll-mt-24 overflow-hidden rounded-3xl">
-          <div className={cn("p-5 sm:p-8", !store.listo && "opacity-0")}>
+          <div className={cn("p-4 min-[400px]:p-5 sm:p-8", !store.listo && "opacity-0")}>
             <AnimatePresence mode="wait" initial={false} custom={direccion}>
               <motion.div
                 key={paso}
@@ -83,12 +83,12 @@ export function Wizard({ datos, importeInicial, origen = "WEB" }: { datos: Datos
           </div>
 
           {!(paso === 7 && store.enviadoId) && (
-            <div className="flex items-center justify-between gap-3 border-t border-glass-border px-5 py-4 sm:px-8">
+            <div className="flex items-center justify-between gap-2 border-t border-glass-border px-4 py-4 sm:gap-3 sm:px-8">
               <button
                 type="button"
                 onClick={() => mover(paso - 1)}
                 disabled={paso === 0}
-                className="inline-flex h-11 items-center gap-2 rounded-full border border-glass-border px-4 text-sm font-medium transition hover:bg-secondary disabled:opacity-40"
+                className="inline-flex h-11 shrink-0 items-center gap-2 rounded-full border border-glass-border px-4 text-sm font-medium transition hover:bg-secondary disabled:opacity-40"
               >
                 <ArrowLeft className="size-4" /> Atrás
               </button>
@@ -98,7 +98,7 @@ export function Wizard({ datos, importeInicial, origen = "WEB" }: { datos: Datos
                   type="button"
                   onClick={() => mover(paso + 1)}
                   disabled={!!faltante}
-                  className="btn-sun inline-flex h-11 items-center gap-2 rounded-full px-5 text-sm disabled:cursor-not-allowed disabled:opacity-50"
+                  className="btn-sun inline-flex h-11 items-center gap-2 rounded-full px-4 text-sm whitespace-nowrap disabled:cursor-not-allowed disabled:opacity-50 min-[400px]:px-5"
                 >
                   {paso === 4 ? "Ver mi sistema" : paso === 5 ? "Ver financiación" : paso === 6 ? "Pedir presupuesto" : "Siguiente"} <ArrowRight className="size-4" />
                 </button>

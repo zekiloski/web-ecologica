@@ -51,21 +51,21 @@ export default async function Home() {
             </ul>
             <SunScene className="mt-8 hidden w-full max-w-lg lg:block" />
           </div>
-          <div className="w-full max-w-md lg:max-w-none">
+          <div className="w-full max-w-md md:max-w-xl lg:max-w-none">
             <MiniCotizador datos={datos} />
           </div>
         </div>
       </section>
 
       {/* CÓMO FUNCIONA */}
-      <section id="como-funciona" className="mx-auto max-w-7xl scroll-mt-20 px-4 py-20 sm:px-6">
+      <section id="como-funciona" className="mx-auto max-w-7xl scroll-mt-20 px-4 py-14 sm:px-6 sm:py-20">
         <h2 className="max-w-2xl text-4xl font-semibold sm:text-5xl">Cómo funciona</h2>
         <p className="mt-3 max-w-xl text-muted-foreground">De la cotización online a tu techo generando energía, en tres pasos.</p>
         <ol className="mt-12 grid gap-4 md:grid-cols-3">
           {PASOS_COMO_FUNCIONA.map((p, i) => {
             const Icono = ICONOS_PASOS[i];
             return (
-              <li key={p.titulo} className="glass relative rounded-3xl p-7">
+              <li key={p.titulo} className="glass relative rounded-3xl p-6 sm:p-7">
                 <span className="font-heading text-sm text-muted-foreground">0{i + 1}</span>
                 <Icono className="mt-6 size-8 text-primary" />
                 <h3 className="mt-4 text-xl font-semibold">{p.titulo}</h3>
@@ -77,7 +77,7 @@ export default async function Home() {
       </section>
 
       {/* PROYECTOS */}
-      <section id="proyectos" className="mx-auto max-w-7xl scroll-mt-20 px-4 py-20 sm:px-6">
+      <section id="proyectos" className="mx-auto max-w-7xl scroll-mt-20 px-4 py-14 sm:px-6 sm:py-20">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="inline-flex items-center gap-2 text-sm font-medium text-eco">
@@ -98,13 +98,13 @@ export default async function Home() {
       </section>
 
       {/* IMPACTO */}
-      <section className="mx-auto max-w-7xl px-4 pb-20 sm:px-6">
+      <section className="mx-auto max-w-7xl px-4 pb-14 sm:px-6 sm:pb-20">
         <Impacto factorCO2={datos.config.factorCO2KgKwh} kgPorArbol={datos.config.kgCO2PorArbol} />
       </section>
 
       {/* BANCOR */}
-      <section id="financiacion" className="mx-auto max-w-7xl scroll-mt-20 px-4 py-20 sm:px-6">
-        <div className="relative overflow-hidden rounded-[2rem] bg-night p-8 text-white sm:p-12">
+      <section id="financiacion" className="mx-auto max-w-7xl scroll-mt-20 px-4 py-14 sm:px-6 sm:py-20">
+        <div className="relative overflow-hidden rounded-[2rem] bg-night p-6 text-white sm:p-12">
           <div className="pointer-events-none absolute -right-24 -bottom-24 size-96 rounded-full bg-sun opacity-25 blur-3xl" />
           <div className="pointer-events-none absolute -top-24 -left-24 size-72 rounded-full bg-eco opacity-20 blur-3xl" />
           <div className="relative grid gap-10 lg:grid-cols-[1.2fr_1fr] lg:items-center">
@@ -141,7 +141,7 @@ export default async function Home() {
       </section>
 
       {/* NOSOTROS */}
-      <section id="nosotros" className="mx-auto max-w-7xl scroll-mt-20 px-4 py-20 sm:px-6">
+      <section id="nosotros" className="mx-auto max-w-7xl scroll-mt-20 px-4 py-14 sm:px-6 sm:py-20">
         <div className="grid gap-10 lg:grid-cols-[1fr_1.1fr] lg:items-start">
           <div>
             <p className="inline-flex items-center gap-2 text-sm font-medium text-eco">
@@ -180,7 +180,7 @@ export default async function Home() {
       </section>
 
       {/* FAQ */}
-      <section id="preguntas" className="mx-auto max-w-3xl scroll-mt-20 px-4 py-20 sm:px-6">
+      <section id="preguntas" className="mx-auto max-w-3xl scroll-mt-20 px-4 py-14 sm:px-6 sm:py-20">
         <h2 className="text-4xl font-semibold sm:text-5xl">Preguntas frecuentes</h2>
         <Accordion className="mt-8">
           {FAQ.map((f) => (
@@ -193,9 +193,9 @@ export default async function Home() {
       </section>
 
       {/* CONTACTO */}
-      <section id="contacto" className="mx-auto max-w-7xl scroll-mt-20 px-4 py-20 sm:px-6">
+      <section id="contacto" className="mx-auto max-w-7xl scroll-mt-20 px-4 py-14 sm:px-6 sm:py-20">
         <div className="grid gap-6 lg:grid-cols-2">
-          <div className="glass rounded-3xl p-8">
+          <div className="glass rounded-3xl p-6 sm:p-8">
             <h2 className="text-4xl font-semibold">Hablemos</h2>
             <p className="mt-3 text-muted-foreground">Escribinos y coordinamos una visita técnica para medir tu techo y darte el presupuesto final.</p>
             <ul className="mt-6 space-y-3 text-sm">
@@ -204,13 +204,13 @@ export default async function Home() {
               </li>
               <li className="flex items-start gap-3">
                 <Phone className="mt-0.5 size-4 shrink-0 text-eco" />
-                <a href={`tel:+5493572445884`} className="hover:underline">
+                <a href={`tel:+5493572445884`} className="-my-2 inline-flex min-h-10 items-center hover:underline">
                   {EMPRESA.telefono}
                 </a>
               </li>
               <li className="flex items-start gap-3">
                 <Mail className="mt-0.5 size-4 shrink-0 text-eco" />
-                <a href={`mailto:${EMPRESA.email}`} className="hover:underline">
+                <a href={`mailto:${EMPRESA.email}`} className="-my-2 inline-flex min-h-10 items-center break-all hover:underline">
                   {EMPRESA.email}
                 </a>
               </li>
@@ -238,11 +238,11 @@ export default async function Home() {
                 Cotizar online
               </Link>
             </div>
-            <p className="mt-6 flex gap-4 text-sm text-muted-foreground">
-              <a href={EMPRESA.redes.instagram} target="_blank" rel="noopener noreferrer" className="hover:text-foreground">
+            <p className="mt-4 flex gap-2 text-sm text-muted-foreground">
+              <a href={EMPRESA.redes.instagram} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center px-2 hover:text-foreground">
                 Instagram
               </a>
-              <a href={EMPRESA.redes.facebook} target="_blank" rel="noopener noreferrer" className="hover:text-foreground">
+              <a href={EMPRESA.redes.facebook} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center px-2 hover:text-foreground">
                 Facebook
               </a>
             </p>

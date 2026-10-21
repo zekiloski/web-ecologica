@@ -23,7 +23,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
           <div className="flex items-center gap-3">
             <Logo />
-            <span className="rounded-full bg-secondary px-2.5 py-0.5 text-xs text-muted-foreground">Panel</span>
+            <span className="hidden rounded-full bg-secondary px-2.5 py-0.5 text-xs text-muted-foreground min-[400px]:inline">Panel</span>
           </div>
           <div className="flex items-center gap-2">
             <Link href="/" className="hidden text-sm text-muted-foreground hover:text-foreground sm:block">
@@ -39,7 +39,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           </div>
         </div>
       </header>
-      <div className="mx-auto grid max-w-7xl gap-6 px-4 py-6 sm:px-6 lg:grid-cols-[200px_1fr]">
+      <div className="mx-auto grid max-w-7xl gap-4 px-4 py-4 sm:gap-6 sm:px-6 sm:py-6 lg:grid-cols-[200px_1fr]">
         <aside className="lg:sticky lg:top-22 lg:self-start">
           <AdminNav esAdmin={session.user.role === "ADMIN"} />
         </aside>

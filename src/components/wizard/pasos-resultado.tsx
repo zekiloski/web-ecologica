@@ -43,7 +43,7 @@ function Tarjeta({
       <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
         <Icono className="size-3.5" /> {titulo}
       </p>
-      <p className={cn("mt-1.5 font-heading text-2xl font-semibold sm:text-3xl", ahorro && "text-ahorro")}>
+      <p className={cn("mt-1.5 font-heading text-[clamp(1.35rem,5.2vw,1.875rem)] leading-tight font-semibold break-words", ahorro && "text-ahorro")}>
         <AnimatedNumber value={valor} formato={formato} />
         {sufijo && <span className="ml-1 text-base font-normal text-muted-foreground">{sufijo}</span>}
       </p>
@@ -60,24 +60,24 @@ export function PasoResultado({ datos, res }: PropsPaso) {
     <div>
       <TituloPaso titulo="Tu sistema solar" ayuda={`Calculado para ${res.localidad.nombre} con la tarifa ${res.tarifa.categoria} de ${res.localidad.distribuidora}.`} />
 
-      <div className="relative overflow-hidden rounded-3xl bg-night p-6 text-white sm:p-8">
+      <div className="relative overflow-hidden rounded-3xl bg-night p-5 text-white sm:p-8">
         <div className="pointer-events-none absolute -top-20 -right-20 size-72 rounded-full bg-sun opacity-30 blur-3xl" />
-        <div className="relative grid gap-6 sm:grid-cols-3">
+        <div className="relative grid grid-cols-2 gap-5 sm:grid-cols-3 sm:gap-6">
           <div>
             <p className="text-sm text-white/60">Potencia recomendada</p>
-            <p className="font-heading text-5xl font-semibold">
+            <p className="font-heading text-4xl font-semibold sm:text-5xl">
               <AnimatedNumber value={s.kwpReal} formato="decimal2" />
               <span className="ml-1 text-xl text-white/60">kWp</span>
             </p>
           </div>
           <div>
             <p className="text-sm text-white/60">Paneles</p>
-            <p className="font-heading text-5xl font-semibold">
+            <p className="font-heading text-4xl font-semibold sm:text-5xl">
               <AnimatedNumber value={s.paneles} />
               <span className="ml-1 text-xl text-white/60">× {datos.panel.wp} Wp</span>
             </p>
           </div>
-          <div>
+          <div className="col-span-2 sm:col-span-1">
             <p className="text-sm text-white/60">Precio estimado instalado</p>
             <p className="font-heading text-3xl font-semibold text-amber-300">
               <AnimatedNumber value={s.precio.total} formato="pesos" />
@@ -96,7 +96,7 @@ export function PasoResultado({ datos, res }: PropsPaso) {
         )}
       </div>
 
-      <div className="mt-4 grid grid-cols-2 gap-3 lg:grid-cols-4">
+      <div className="mt-4 grid grid-cols-1 gap-3 min-[400px]:grid-cols-2 2xl:grid-cols-4">
         <Tarjeta icono={PiggyBank} titulo="Ahorro por mes" valor={s.ahorroMensualPromedio} formato="pesos" ahorro destacada nota="Promedio del primer año" />
         <Tarjeta icono={Wallet} titulo="Ahorro por año" valor={s.ahorroAnual} formato="pesos" ahorro />
         <Tarjeta icono={Leaf} titulo="Ahorro en 25 años" valor={s.ahorro25Anios} formato="pesos" ahorro nota={`En pesos de hoy, con la tarifa subiendo un ${pct(datos.config.aumentoTarifaAnual)} anual por encima de la inflación`} />
@@ -224,7 +224,7 @@ export function PasoFinanciacion({ datos, r, actualizar, res }: PropsPaso) {
                 value={[Math.min(r.credito.anticipo, Math.round(precio * 0.9))]}
                 onValueChange={(v) => actualizar((x) => void (x.credito.anticipo = Array.isArray(v) ? v[0] : (v as number)))}
                 aria-label="Anticipo"
-                className="py-3 [&_[data-slot=slider-range]]:bg-sun [&_[data-slot=slider-thumb]]:size-5 [&_[data-slot=slider-track]]:h-2"
+                className="py-3 [&_[data-slot=slider-range]]:bg-sun [&_[data-slot=slider-thumb]]:size-6 sm:[&_[data-slot=slider-thumb]]:size-5 [&_[data-slot=slider-track]]:h-2"
               />
               <p className="mt-2 text-sm">
                 Monto a financiar: <span className="font-semibold">{pesos(c.montoFinanciado)}</span>
@@ -243,7 +243,7 @@ export function PasoFinanciacion({ datos, r, actualizar, res }: PropsPaso) {
             <div className="relative overflow-hidden rounded-3xl bg-night p-6 text-white">
               <div className="pointer-events-none absolute -right-16 -bottom-16 size-56 rounded-full bg-sun opacity-25 blur-3xl" />
               <p className="relative text-sm text-white/60">{c.esUVA ? "Cuota inicial (al valor UVA de hoy)" : "Cuota mensual"}</p>
-              <p className="relative font-heading text-5xl font-semibold text-amber-300">
+              <p className="relative font-heading text-4xl font-semibold text-amber-300 sm:text-5xl">
                 <AnimatedNumber value={c.cuotaInicial} formato="pesos" />
               </p>
               {c.esUVA && c.cuotaUVA != null && (
@@ -263,9 +263,9 @@ export function PasoFinanciacion({ datos, r, actualizar, res }: PropsPaso) {
                 ["TEA", c.tea],
                 ["CFT", c.cft],
               ].map(([k, v]) => (
-                <div key={k as string} className="glass flex flex-col justify-center rounded-2xl p-3 sm:flex-row sm:items-center sm:justify-between sm:px-5">
+                <div key={k as string} className="glass flex min-w-0 flex-col justify-center rounded-2xl p-2.5 min-[400px]:p-3 sm:flex-row sm:items-center sm:justify-between sm:px-5">
                   <dt className="text-xs font-medium text-muted-foreground">{k}</dt>
-                  <dd className="font-heading text-xl font-semibold">{pct(v as number, 2)}</dd>
+                  <dd className="font-heading text-base font-semibold whitespace-nowrap min-[400px]:text-lg sm:text-xl">{pct(v as number, 2)}</dd>
                 </div>
               ))}
             </dl>
@@ -437,13 +437,13 @@ export function PasoContacto({
             {form.formState.isSubmitting && <Loader2 className="size-5 animate-spin" />}
             Quiero mi presupuesto
           </button>
-          <a href={linkWhatsApp(datos.config.whatsapp, msj)} target="_blank" rel="noopener noreferrer" className="mt-3 flex items-center justify-center gap-2 text-sm text-muted-foreground hover:text-foreground">
+          <a href={linkWhatsApp(datos.config.whatsapp, msj)} target="_blank" rel="noopener noreferrer" className="mt-2 flex min-h-11 items-center justify-center gap-2 text-sm text-muted-foreground hover:text-foreground">
             <WhatsAppIcon className="size-4" /> Prefiero hablar por WhatsApp ahora
           </a>
         </div>
       </form>
       {/* Resumen corto de lo que se envía */}
-      <div className="mt-6 grid grid-cols-3 gap-2 rounded-2xl bg-secondary/60 p-4 text-center text-sm">
+      <div className="mt-6 grid grid-cols-1 gap-3 rounded-2xl bg-secondary/60 p-4 text-center text-sm min-[400px]:grid-cols-3 min-[400px]:gap-2">
         <div>
           <p className="text-xs text-muted-foreground">Sistema</p>
           <p className="font-semibold">{numero(res.sistema.kwpReal, 2)} kWp</p>

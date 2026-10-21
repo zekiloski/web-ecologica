@@ -130,7 +130,7 @@ export function NumberField({
             setTexto(decimales && limpio.endsWith(",") ? limpio : n == null ? "" : numero(n, decimales));
             onChange(n);
           }}
-          className={cn("w-full min-w-0 bg-transparent outline-none placeholder:text-muted-foreground/50", grande && "font-heading text-2xl font-semibold")}
+          className={cn("h-full w-full min-w-0 bg-transparent outline-none placeholder:text-muted-foreground/50", grande && "font-heading text-2xl font-semibold")}
         />
         {sufijo && <span className="shrink-0 text-sm text-muted-foreground">{sufijo}</span>}
       </div>
